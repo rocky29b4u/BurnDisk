@@ -1,0 +1,6 @@
+/target
+*.pdb
+*.exe
+.env*
+secrets.json
+rust/HANDOFF.md.bak
