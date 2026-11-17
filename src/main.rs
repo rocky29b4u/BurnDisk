@@ -22,6 +22,7 @@ fn print_help() {
     println!("  burn-disk plan <disc> <file|folder>...");
     println!("  burn-disk new-project <path> [disc]");
     println!("  burn-disk info <path>");
+    println!("  burn-disk drives");
 }
 
 fn main() {
@@ -102,6 +103,27 @@ fn run(args: &[String]) -> anyhow::Result<()> {
             println!("files: {}", proj.files.len());
             let total: u64 = proj.files.iter().map(|f| f.size).sum();
             println!("total bytes: {}", total);
+        }
+        "drives" => {
+            match burn_disk::drives::enumerate_drives() {
+                Ok(ds) => {
+                    if ds.is_empty() {
+                        println!("no optical drives found");
+                    }
+                    for d in ds {
+                        println!("{} (supported={})", d.id, d.is_supported);
+                    }
+                }
+                Err(e) => {
+                    println!("drive enumeration failed: {e}");
+                }
+            }
+        }
+        #[cfg(feature = "gui")]
+        "gui" => {
+            if let Err(e) = burn_disk::gui::run_gui() {
+                println!("gui failed: {e}");
+            }
         }
         _ => {
             print_help();

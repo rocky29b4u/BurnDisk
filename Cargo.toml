@@ -1,6 +1,6 @@
 [package]
 name = "burn-disk"
-version = "1.0.0"
+version = "1.1.0"
 edition = "2021"
 rust-version = "1.80"
 description = "BurnDisk - a Rust disc burning and ISO creation tool, ported from DiscBurner/BurnAware concepts"
@@ -15,10 +15,13 @@ path = "src/main.rs"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 anyhow = "1"
+windows = { version = "0.62", features = ["Win32_Foundation", "Win32_System_Com", "Win32_Storage_Imapi", "Win32_System_Ole"] }
+eframe = { version = "0.37", optional = true }
 libmkiso = { version = "0.1", optional = true }
 
 [features]
 default = []
+gui = ["dep:eframe"]
 iso = ["dep:libmkiso"]
 
 [dev-dependencies]
